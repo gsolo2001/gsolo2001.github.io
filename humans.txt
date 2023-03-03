@@ -1,0 +1,13 @@
+/* What's this file? */
+Check out the humans.txt initiative: https://humanstxt.org/
+
+/* TEAM */
+Developer: Grant Solomon
+Contact: github.com/gsolo2001
+Location: USA
+
+/* SITE */
+Last Updated: 03/03/2023
+Language: English
+Standards: HTML5, CSS3, JS
+IDE: Dreamweaver, Illustrator, FileZilla
