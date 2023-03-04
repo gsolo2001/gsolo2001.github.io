@@ -1,5 +1,10 @@
 'use strict';
 
+// go to page on history change
+window.addEventListener('popstate', (event) => {
+	goToPage(history.state);
+});
+
 // element toggle function
 const elementToggleFunc = function (elem) { elem.classList.toggle("active"); }
 
@@ -149,17 +154,9 @@ const pages = document.querySelectorAll("[data-page]");
 // add event to all nav link
 for (let i = 0; i < navigationLinks.length; i++) {
   navigationLinks[i].addEventListener("click", function () {
-
-    for (let i = 0; i < pages.length; i++) {
-      if (this.innerHTML.toLowerCase() === pages[i].dataset.page) {
-				removeActivePages();
-				
-        pages[i].classList.add("active");
-        navigationLinks[i].classList.add("active");
-        window.scrollTo(0, 0);
-      }
-    }
-
+		
+		goToPage(this.innerHTML.toLowerCase());
+		
   });
 }
 
@@ -193,31 +190,36 @@ for (let i = 0; i < imageSliders.length; i++) {
 
 
 // helper functions
-function getElementByText (filter, str) {
-	
-	for (const element of document.querySelectorAll(filter))
-		if (element.innerText.toLowerCase().includes(str.toLowerCase()))
-			return element;
-	
-}
-
 function goToPortfolioFilter(filter) {
 	
-	let filterBtn = getElementByText ("button[data-filter-btn]", filter);
+	let filterBtn = getElementByText("button[data-filter-btn]", filter);
 	filterBtn.click();
 
-	let pageBtn = getElementByText ("button[data-nav-link]", "portfolio");
-	pageBtn.click();
+	goToPage("portfolio");
 	
 }
 
+	function getElementByText(filter, str) {
+
+		for (const element of document.querySelectorAll(filter.toLowerCase()))
+			if (element.innerText.toLowerCase().includes(str.toLowerCase()))
+				return element;
+
+	}
+
 function goToPage(page) {
+	if (history.state != page)
+		history.pushState(page, "");
 	
 	for (let i = 0; i < pages.length; i++) {
-		if (pages[i].dataset.page == page) {
+		if (pages[i].dataset.page.toLowerCase() == page.toLowerCase()) {
 			removeActivePages();
 			
 			pages[i].classList.add("active");
+			
+			if (navigationLinks[i].innerHTML.toLowerCase() == page)
+				navigationLinks[i].classList.add("active");
+			
 			window.scrollTo(0, 0);
 		}
 	}
@@ -226,10 +228,10 @@ function goToPage(page) {
 
 function removeActivePages() {
 	for (let i = 0; i < pages.length; i++) {
-		pages[i].classList.remove("active");
-	}
-	
-	for (let i = 0; i < navigationLinks.length; i++) {
-		navigationLinks[i].classList.remove("active");
+		if (pages[i].classList.contains('active'))
+			pages[i].classList.remove("active");
+		
+		if (i < navigationLinks.length && navigationLinks[i].classList.contains('active'))
+			navigationLinks[i].classList.remove("active");
 	}
 }
