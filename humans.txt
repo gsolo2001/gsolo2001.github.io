@@ -10,4 +10,4 @@ Location: USA
 Last Updated: 03/04/2023
 Language: English
 Standards: HTML5, CSS3, JS
-IDE: Dreamweaver, Illustrator, FileZilla
+IDE: Dreamweaver, Illustrator, GitHub
